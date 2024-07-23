@@ -3,6 +3,7 @@ import { addCompany, getCompanies } from "../controllers/company.controller.js";
 
 const companyRoutes = Router();
 
-companyRoutes.route('/').post(addCompany).get(getCompanies);
+companyRoutes.route('/').get(getCompanies);
+companyRoutes.route('/add-company').post(addCompany)
 
 export default companyRoutes;
