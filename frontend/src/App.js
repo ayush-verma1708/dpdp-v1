@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import AddCompany from './pages/AddCompany';
+import Home from './pages/Home';
 
 const App = () => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
