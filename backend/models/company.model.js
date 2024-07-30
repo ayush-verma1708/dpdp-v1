@@ -1,6 +1,6 @@
 import mongoose, { Schema, model} from 'mongoose'
 
-const companySchema = Schema({
+const companySchema = new Schema({
   name: {
     type: String,
     required: [true, 'Username is required'],
@@ -27,4 +27,4 @@ const companySchema = Schema({
   timestamps: true,
 });
 
-export const Company = model('Company', companySchema);
+export const Company = model("Company", companySchema);

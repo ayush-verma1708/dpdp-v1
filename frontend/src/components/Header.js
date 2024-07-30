@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6">
-          Company Directory
+          Digital Personal Data Protection
         </Typography>
       </Toolbar>
     </AppBar>

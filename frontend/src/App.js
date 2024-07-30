@@ -5,6 +5,9 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import AddCompany from './pages/AddCompany';
+import AssetList from './pages/asset/AssetsList';
+import AddAsset from './pages/asset/AddAsset';
+import CoverageList from './pages/coverage/CoverageList';
 
 const App = () => {
   return (
@@ -17,6 +20,9 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/add-company" element={<AddCompany />} />
+              <Route path='/assets' element={<AssetList />} />
+              <Route path='/add-asset' element={<AddAsset />} />
+              <Route path='/coverages' element={<CoverageList />} />
             </Routes>
           </main>
           <Footer />

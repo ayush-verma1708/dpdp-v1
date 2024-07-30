@@ -4,8 +4,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
 
 const AddCompany = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -19,6 +22,8 @@ const AddCompany = () => {
     setEmail('');
     setAddress('');
     setIndustryType('');
+
+    navigate('/');
   };
 
   return (

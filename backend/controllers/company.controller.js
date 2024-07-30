@@ -23,15 +23,17 @@ const addCompany = AsyncHandler(async (req, res) => {
 
 // Get companies with pagination
 const getCompanies =  AsyncHandler(async (req, res) => {
-  const pageSize = 10;
+  const pageSize = Number(req.query.pageSize) || 10;
   const page = Number(req.query.pageNumber) || 1;
+  const sortField = req.query.sortField || 'createdAt';
+  const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
   const count = await Company.countDocuments({});
   const companies = await Company.find({})
-    .limit(pageSize)
+  .sort({ [sortField]: sortOrder })
+    .limit(pageSize)  
     .skip(pageSize * (page - 1));
-  res.json(
-    { companies, page, pages: Math.ceil(count / pageSize) }
-  );
+  
+    res.json({ companies, page, pages: Math.ceil(count / pageSize), total: count });
 });
 
 export { addCompany, getCompanies };

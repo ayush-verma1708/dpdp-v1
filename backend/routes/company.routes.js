@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { addCompany, getCompanies } from "../controllers/company.controller.js";
 
-const companyRoutes = Router();
+const companyRouter = Router();
 
-companyRoutes.route('/').get(getCompanies);
-companyRoutes.route('/add-company').post(addCompany)
+companyRouter.route('/').get(getCompanies);
+companyRouter.route('/add-company').post(addCompany)
 
-export default companyRoutes;
+export default companyRouter;
