@@ -1,0 +1,44 @@
+.controls-container {
+  padding: 20px;
+}
+
+.control-form {
+  margin-bottom: 20px;
+}
+
+.control-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submit-button, .cancel-button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.controls-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.controls-table th, .controls-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.controls-table th {
+  background-color: #f4f4f4;
+}

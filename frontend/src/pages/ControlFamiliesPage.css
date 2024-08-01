@@ -1,0 +1,45 @@
+.control-families-container {
+    padding: 20px;
+  }
+  
+  .control-family-form {
+    margin-bottom: 20px;
+  }
+  
+  .control-family-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .submit-button, .cancel-button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .control-families-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .control-families-table th, .control-families-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .control-families-table th {
+    background-color: #f4f4f4;
+  }
+  

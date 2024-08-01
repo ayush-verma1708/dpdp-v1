@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
+import Header from './Header';
 
 const Home = () => {
   const [companies, setCompanies] = useState([]);
@@ -36,6 +37,7 @@ const Home = () => {
 
   return (
     <div className="p-4">
+       <Header pageName="Home" />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

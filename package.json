@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.5",
+    "@mui/material": "^5.16.6",
+    "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "xlsx": "^0.18.5"

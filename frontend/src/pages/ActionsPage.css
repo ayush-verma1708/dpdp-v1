@@ -1,0 +1,44 @@
+.actions-container {
+  padding: 20px;
+}
+
+.action-form {
+  margin-bottom: 20px;
+}
+
+.action-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submit-button, .cancel-button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.actions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.actions-table th, .actions-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.actions-table th {
+  background-color: #f4f4f4;
+}

@@ -1,0 +1,40 @@
+.sidebar {
+  width: 16rem;
+  background-color: #1a202c;
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-content {
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar .MuiList-root {
+  padding: 0;
+}
+
+.sidebar .MuiListItem-root {
+  padding-left: 1rem;
+}
+
+.sidebar .MuiListItem-root.active {
+  background-color: #2d3748;
+}
+
+.sidebar .MuiListItem-root:hover {
+  background-color: #2d3748;
+}
+
+.sidebar .MuiListItemText-primary {
+  color: white;
+}
+
+.hamburger-button {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1300; /* Ensure the button is above other elements */
+}
