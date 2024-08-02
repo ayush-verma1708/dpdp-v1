@@ -9,8 +9,13 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     "@mui/material": "^5.16.4",
     "@mui/x-data-grid": "^7.11.0",
+=======
+    "@mui/material": "^5.16.5",
+    "@mui/x-data-grid": "^7.11.1",
+>>>>>>> Stashed changes
 =======
     "@mui/material": "^5.16.5",
     "@mui/x-data-grid": "^7.11.1",

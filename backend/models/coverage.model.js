@@ -4,6 +4,7 @@ const coverageSchema = new mongoose.Schema({
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   name: {
     type: String,
     required: true
@@ -26,6 +27,11 @@ const coverageSchema = new mongoose.Schema({
     type: Number,
     default: 0,
 >>>>>>> Stashed changes
+=======
+  coverageCount: {
+    type: Number,
+    default: 0,
+>>>>>>> Stashed changes
   },
   scoped: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,8 +39,14 @@ const coverageSchema = new mongoose.Schema({
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     required: true
   }
+=======
+    default: null
+  }
+},{ timestamps: true
+>>>>>>> Stashed changes
 =======
     default: null
   }

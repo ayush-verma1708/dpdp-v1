@@ -2,7 +2,11 @@ import { Router } from 'express';
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { createAsset, getAssets, getAssetById, updateAsset, deleteAsset, } from '../controllers/asset.controller.js';
+=======
+import { createAsset, getAssets, getAssetById, updateAsset, deleteAsset, getScopedByAsset } from '../controllers/asset.controller.js';
+>>>>>>> Stashed changes
 =======
 import { createAsset, getAssets, getAssetById, updateAsset, deleteAsset, getScopedByAsset } from '../controllers/asset.controller.js';
 >>>>>>> Stashed changes
@@ -20,6 +24,10 @@ assetRouter.route("/").get(getAssets);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+assetRouter.route("/:assetId/scoped").get(getScopedByAsset);
+>>>>>>> Stashed changes
 =======
 assetRouter.route("/:assetId/scoped").get(getScopedByAsset);
 >>>>>>> Stashed changes
