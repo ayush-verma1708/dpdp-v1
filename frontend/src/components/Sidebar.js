@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <div className="w-64 h-full bg-gray-800 text-white">
-      <List>
+      <List style={{marginTop: '25%'}}>
         <ListItem button component={Link} to="/">
           <ListItemText primary="Home" />
         </ListItem>

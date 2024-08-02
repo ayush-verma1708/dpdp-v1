@@ -344,7 +344,7 @@ const AssetList = () => {
     <>
       <Container>
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} alignItems="center">
+          <Grid container spacing={1} alignItems="center">
             <Grid item xs={12} sm={3}>
             <FormControl fullWidth margin="normal">
               <InputLabel id="asset-label">Asset</InputLabel>
@@ -400,19 +400,7 @@ const AssetList = () => {
             )}
             {selectedAsset && (
                <>
-               <Grid item xs={12} sm={6}>
-                 <FormControlLabel
-                   control={
-                     <Checkbox
-                       checked={criticality}
-                       onChange={(e) => setCriticality(e.target.checked)}
-                     />
-                   }
-                   label="Criticality"
-                 />
-               </Grid>
- 
-               <Grid item xs={12} sm={6}>
+               <Grid item xs={12} sm={3}>
                  <TextField
                    label="Business Owner Name"
                    fullWidth
@@ -421,7 +409,7 @@ const AssetList = () => {
                    onChange={(e) => setBusinessOwnerName(e.target.value)}
                  />
                </Grid>
-               <Grid item xs={12} sm={6}>
+               <Grid item xs={12} sm={3}>
                  <TextField
                    label="Business Owner Email"
                    fullWidth
@@ -430,7 +418,7 @@ const AssetList = () => {
                    onChange={(e) => setBusinessOwnerEmail(e.target.value)}
                  />
                </Grid>
-               <Grid item xs={12} sm={6}>
+               <Grid item xs={12} sm={3}>
                  <TextField
                    label="IT Owner Name"
                    fullWidth
@@ -439,13 +427,24 @@ const AssetList = () => {
                    onChange={(e) => setItOwnerName(e.target.value)}
                  />
                </Grid>
-               <Grid item xs={12} sm={6}>
+               <Grid item xs={12} sm={3}>
                  <TextField
                    label="IT Owner Email"
                    fullWidth
                    margin="normal"
                    value={itOwnerEmail}
                    onChange={(e) => setItOwnerEmail(e.target.value)}
+                 />
+               </Grid>
+               <Grid item xs={12} sm={3}>
+                 <FormControlLabel
+                   control={
+                     <Checkbox
+                       checked={criticality}
+                       onChange={(e) => setCriticality(e.target.checked)}
+                     />
+                   }
+                   label="Criticality"
                  />
                </Grid>
              </>
@@ -462,7 +461,7 @@ const AssetList = () => {
           variant="h5"
           component="h2"
           gutterBottom
-          style={{ marginTop: "2rem" }}
+          style={{ marginTop: "1rem" }}
         >
           Asset Data
         </Typography>
