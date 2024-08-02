@@ -4,6 +4,11 @@ import cors from 'cors';
 import bodyParser from 'body-parser'
 // import routes
 import companyRoutes from './routes/company.routes.js';
+import assetRouter from './routes/asset.routes.js';
+import scopedRouter from './routes/scoped.routes.js';
+import coverageRouter from './routes/coverage.routes.js';
+import businessRouter from './routes/business.routes.js';
+import itRouter from './routes/it.routes.js';
 
 const app = express();
 
@@ -21,5 +26,14 @@ app.use(cookieParser())
 
 // routes declaration
 app.use("/api/v1/companies", companyRoutes)
+<<<<<<< Updated upstream
 
 export { app };
+=======
+app.use("/api/v1/assets", assetRouter)
+app.use("/api/v1/scoped", scopedRouter)
+app.use("/api/v1/coverage", coverageRouter)
+app.use("/api/v1/business", businessRouter)
+app.use("/api/v1/it", itRouter)
+export { app }
+>>>>>>> Stashed changes

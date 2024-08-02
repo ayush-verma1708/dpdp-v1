@@ -15,7 +15,7 @@ const AddCompany = () => {
   const [industryType, setIndustryType] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     const newCompany = { name, email, address, industryType };
     await addCompany(newCompany);
     setName('');

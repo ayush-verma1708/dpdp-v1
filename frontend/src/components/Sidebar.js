@@ -54,6 +54,9 @@ const Sidebar = () => {
         <ListItem button component={Link} to="/alert-management">
           <ListItemText primary="Alert And Recommendations" />
         </ListItem>
+        <ListItem button component={Link} to="/asset">
+          <ListItemText primary="Asset" />
+        </ListItem>
       </List>
     </div>
   );

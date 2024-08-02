@@ -4,7 +4,11 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import AddCompany from './pages/AddCompany';
+<<<<<<< Updated upstream
 import Home from './pages/Home';
+=======
+import AssetList from './pages/asset/AssetsList';
+>>>>>>> Stashed changes
 
 const App = () => {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
@@ -29,6 +33,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/add-company" element={<AddCompany />} />
+              <Route path="/asset" element={<AssetList />} />
             </Routes>
           </main>
           {authToken && <Footer />}

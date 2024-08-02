@@ -1,26 +1,44 @@
+<<<<<<< Updated upstream
 import { Asset } from '../models/asset.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { AsyncHandler } from '../utils/asyncHandler.js';
+=======
+import { Asset } from "../models/asset.model.js";
+import { Scoped } from "../models/scoped.model.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { AsyncHandler } from "../utils/asyncHandler.js";
+>>>>>>> Stashed changes
 
 const getAssets = AsyncHandler(async (req, res) => {
   try {
     const assets = await Asset.find({});
+<<<<<<< Updated upstream
     res.json(assets)
   }
   catch (err) {
+=======
+    res.json(assets);
+  } catch (err) {
+>>>>>>> Stashed changes
     res.status(500).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 // @desc    Get asset by ID
 // @route   GET /api/assets/:id
 // @access  Public
 const getAssetById = AsyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id).populate('coverages');
+=======
+const getAssetById = AsyncHandler(async (req, res) => {
+  const asset = await Asset.findById(req.params.id).populate("coverages");
+>>>>>>> Stashed changes
   if (asset) {
     res.json(asset);
   } else {
     res.status(404);
+<<<<<<< Updated upstream
     throw new Error('Asset not found');
   }
 });
@@ -38,11 +56,42 @@ const createAsset = AsyncHandler(async (req, res) => {
   res.status(201).json(
     new ApiResponse(201, createdAsset, "Crated Asset Successfully")
   );
+=======
+    throw new Error("Asset not found");
+  }
+});
+
+const createAsset = AsyncHandler(async (req, res) => {
+  const {
+    name, type, desc, isScoped, criticality,
+    businessOwnerName, businessOwnerEmail, itOwnerName, itOwnerEmail
+  } = req.body;
+
+  try {
+    const newAsset = new Asset({
+      name,
+      type,
+      desc,
+      isScoped,
+      criticality,
+      businessOwnerName,
+      businessOwnerEmail,
+      itOwnerName,
+      itOwnerEmail
+    });
+
+    const createdAsset = await newAsset.save();
+
+    res
+      .status(201)
+      .json(new ApiResponse(201, createdAsset, "Created Asset Successfully"));
+>>>>>>> Stashed changes
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 // @desc    Update an asset
 // @route   PUT /api/assets/:id
 // @access  Public
@@ -56,25 +105,44 @@ const updateAsset = AsyncHandler(async (req, res) => {
       asset.name = name;
       asset.desc = desc;
   
+=======
+const updateAsset = AsyncHandler(async (req, res) => {
+  try {
+    const { name, desc } = req.body;
+    const asset = await Asset.findById(req.params.id);
+
+    if (asset) {
+      asset.name = name;
+      asset.desc = desc;
+
+>>>>>>> Stashed changes
       const updatedAsset = await asset.save();
       res.json(updatedAsset);
     } else {
       res.status(404);
+<<<<<<< Updated upstream
       throw new Error('Asset not found');
+=======
+      throw new Error("Asset not found");
+>>>>>>> Stashed changes
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 // @desc    Delete an asset
 // @route   DELETE /api/assets/:id
 // @access  Public
+=======
+>>>>>>> Stashed changes
 const deleteAsset = AsyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id);
 
   if (asset) {
     await asset.remove();
+<<<<<<< Updated upstream
     res.json({ message: 'Asset removed' });
   } else {
     res.status(404);
@@ -83,3 +151,26 @@ const deleteAsset = AsyncHandler(async (req, res) => {
 });
 
 export { createAsset, getAssets, getAssetById, updateAsset, deleteAsset };
+=======
+    res.json({ message: "Asset removed" });
+  } else {
+    res.status(404);
+    throw new Error("Asset not found");
+  }
+});
+
+const getScopedByAsset = AsyncHandler(async (req, res) => {
+  const { assetId } = req.params;
+  const scoped = await Scoped.find({ asset: assetId });
+  res.json(scoped);
+});
+
+export {
+  createAsset,
+  getAssets,
+  getAssetById,
+  updateAsset,
+  deleteAsset,
+  getScopedByAsset,
+};
+>>>>>>> Stashed changes

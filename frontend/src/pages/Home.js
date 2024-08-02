@@ -52,6 +52,7 @@ const Home = () => {
   };
 
   return (
+<<<<<<< Updated upstream
     <div className="py-2">
       <Grid container paddingBottom={2} spacing={2} alignItems="center" justifyContent="center">
       
@@ -105,6 +106,26 @@ const Home = () => {
                   Industry Type
                 </TableSortLabel>
               </TableCell>
+=======
+    <div className="p-4">
+      <TableContainer component={Paper} sx={{maxHeight:450}}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Address</TableCell>
+              <TableCell>Industry Type</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {companies.map((company) => (
+              <TableRow key={company._id}>
+                <TableCell>{company.name}</TableCell>
+                <TableCell>{company.email}</TableCell>
+                <TableCell>{company.address}</TableCell>
+                <TableCell>{company.industryType}</TableCell>
+>>>>>>> Stashed changes
               </TableRow>
             </TableHead>
             <TableBody>
