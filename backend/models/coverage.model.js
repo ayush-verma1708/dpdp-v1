@@ -9,7 +9,12 @@ const coverageSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Scoped',
     default: null
-  }
+  },
+  criticality: { type: Boolean, default: false }, // Add criticality field
+  businessOwnerName: { type: String },
+  businessOwnerEmail: { type: String },
+  itOwnerName: { type: String },
+  itOwnerEmail: { type: String },
 },{ timestamps: true
 });
 

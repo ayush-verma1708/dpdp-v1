@@ -15,10 +15,20 @@ const getCoverages = AsyncHandler(async (_, res) => {
 });
 
 const createCoverage = AsyncHandler(async (req, res) => {
-  const { coverageCount, scoped } = req.body;
+  const { coverageCount, scoped,
+    criticality,
+    businessOwnerName,
+    businessOwnerEmail,
+    itOwnerName,
+    itOwnerEmail } = req.body;
 
   try {
-    const coverage = new Coverage({ coverageCount, scoped });
+    const coverage = new Coverage({ coverageCount, scoped,
+      criticality,
+      businessOwnerName,
+      businessOwnerEmail,
+      itOwnerName,
+      itOwnerEmail });
     await coverage.save();
     res.status(201).json(coverage);
   } catch (error) {

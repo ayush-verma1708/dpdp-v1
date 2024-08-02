@@ -1,6 +1,5 @@
 import { Company } from "../models/company.model.js";
-// import { AsyncHandler } from "../utils/asyncHandler.js";
-import AsyncHandler from "../utils/asyncHandler.js"; // Default import
+import { AsyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
