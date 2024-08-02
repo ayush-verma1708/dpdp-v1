@@ -5,11 +5,17 @@ const scopedSchema = new mongoose.Schema({
     type: String,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     required: true
   },
   desc: {
     type: String,
     required: true
+=======
+  },
+  desc: {
+    type: String,
+>>>>>>> Stashed changes
 =======
   },
   desc: {
@@ -26,9 +32,14 @@ const scopedSchema = new mongoose.Schema({
     ref: 'Asset',
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     required: true
   }
 });
+=======
+  }
+},{timestamps: true});
+>>>>>>> Stashed changes
 =======
   }
 },{timestamps: true});

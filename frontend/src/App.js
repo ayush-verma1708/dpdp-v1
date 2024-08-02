@@ -6,7 +6,11 @@ import Sidebar from './components/Sidebar';
 import AddCompany from './pages/AddCompany';
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import Home from './pages/Home';
+=======
+import AssetList from './pages/asset/AssetsList';
+>>>>>>> Stashed changes
 =======
 import AssetList from './pages/asset/AssetsList';
 >>>>>>> Stashed changes

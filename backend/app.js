@@ -28,9 +28,12 @@ app.use(cookieParser())
 app.use("/api/v1/companies", companyRoutes)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 export { app };
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 app.use("/api/v1/assets", assetRouter)
@@ -39,6 +42,10 @@ app.use("/api/v1/coverage", coverageRouter)
 app.use("/api/v1/business", businessRouter)
 app.use("/api/v1/it", itRouter)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+export { app }
+>>>>>>> Stashed changes
+=======
 export { app }
 >>>>>>> Stashed changes
 =======

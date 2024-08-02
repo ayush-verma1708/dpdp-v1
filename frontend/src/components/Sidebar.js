@@ -60,6 +60,9 @@ const Sidebar = () => {
         <ListItem button component={Link} to="/asset">
           <ListItemText primary="Asset" />
         </ListItem>
+        <ListItem button component={Link} to="/asset">
+          <ListItemText primary="Asset" />
+        </ListItem>
       </List>
     </div>
   );
