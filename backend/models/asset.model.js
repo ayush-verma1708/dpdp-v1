@@ -5,6 +5,7 @@ const assetSchema = new mongoose.Schema({
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   name: {
     type: String,
     required: true
@@ -29,6 +30,8 @@ const assetSchema = new mongoose.Schema({
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   name: { type: String, required: true },
   type: { type: String, required: true },
   desc: { type: String },
@@ -43,6 +46,9 @@ const assetSchema = new mongoose.Schema({
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

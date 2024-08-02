@@ -9,6 +9,10 @@ scopedRouter.route('/add-scoped').post(addScoped);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+scopedRouter.route("/:assetId/scoped").get(getScoped);
+>>>>>>> Stashed changes
 =======
 scopedRouter.route("/:assetId/scoped").get(getScoped);
 >>>>>>> Stashed changes

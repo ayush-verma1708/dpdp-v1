@@ -4,7 +4,12 @@ import axios from 'axios';
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const API_URL_ASSET = 'http://localhost:8021/api/v1/assets';
+=======
+const API_URL_ASSET = 'http://localhost:8021/api/v1/assets/';
+const API_URL_ASSETLIST = 'http://localhost:8021/api/v1/assets/assetListdata';
+>>>>>>> Stashed changes
 =======
 const API_URL_ASSET = 'http://localhost:8021/api/v1/assets/';
 const API_URL_ASSETLIST = 'http://localhost:8021/api/v1/assets/assetListdata';
@@ -31,9 +36,12 @@ export const getAssets = async () => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   // const res = await axios.get(`${API_URL_ASSET}`);
   // if(Array.isArray(res.data))
   // return res.data;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -64,7 +72,10 @@ export const getAssetById = async (id) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -79,6 +90,9 @@ export const addAssetList = async (assetList) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

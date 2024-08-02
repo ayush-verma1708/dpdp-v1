@@ -2,10 +2,13 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { Asset } from '../models/asset.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { AsyncHandler } from '../utils/asyncHandler.js';
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -19,6 +22,9 @@ import { AsyncHandler } from "../utils/asyncHandler.js";
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -30,6 +36,7 @@ import { AsyncHandler } from "../utils/asyncHandler.js";
 const getAssets = AsyncHandler(async (req, res) => {
   try {
     const assets = await Asset.find({});
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -53,10 +60,15 @@ const getAssets = AsyncHandler(async (req, res) => {
     res.json(assets);
   } catch (err) {
 >>>>>>> Stashed changes
+=======
+    res.json(assets);
+  } catch (err) {
+>>>>>>> Stashed changes
     res.status(500).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -82,10 +94,15 @@ const getAssetById = AsyncHandler(async (req, res) => {
 const getAssetById = AsyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id).populate("coverages");
 >>>>>>> Stashed changes
+=======
+const getAssetById = AsyncHandler(async (req, res) => {
+  const asset = await Asset.findById(req.params.id).populate("coverages");
+>>>>>>> Stashed changes
   if (asset) {
     res.json(asset);
   } else {
     res.status(404);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -108,6 +125,8 @@ const createAsset = AsyncHandler(async (req, res) => {
     new ApiResponse(201, createdAsset, "Crated Asset Successfully")
   );
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -145,6 +164,9 @@ const createAsset = AsyncHandler(async (req, res) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -157,6 +179,7 @@ const createAsset = AsyncHandler(async (req, res) => {
   }
 });
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -181,6 +204,8 @@ const updateAsset = AsyncHandler(async (req, res) => {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 const updateAsset = AsyncHandler(async (req, res) => {
   try {
     const { name, desc } = req.body;
@@ -193,6 +218,9 @@ const updateAsset = AsyncHandler(async (req, res) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -208,7 +236,11 @@ const updateAsset = AsyncHandler(async (req, res) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       throw new Error('Asset not found');
+=======
+      throw new Error("Asset not found");
+>>>>>>> Stashed changes
 =======
       throw new Error("Asset not found");
 >>>>>>> Stashed changes
@@ -231,9 +263,12 @@ const updateAsset = AsyncHandler(async (req, res) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // @desc    Delete an asset
 // @route   DELETE /api/assets/:id
 // @access  Public
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -251,6 +286,7 @@ const deleteAsset = AsyncHandler(async (req, res) => {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     res.json({ message: 'Asset removed' });
   } else {
     res.status(404);
@@ -260,6 +296,8 @@ const deleteAsset = AsyncHandler(async (req, res) => {
 
 export { createAsset, getAssets, getAssetById, updateAsset, deleteAsset };
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -289,6 +327,10 @@ export {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+};
+>>>>>>> Stashed changes
+=======
 };
 >>>>>>> Stashed changes
 =======

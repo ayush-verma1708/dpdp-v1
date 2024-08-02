@@ -30,9 +30,12 @@ app.use("/api/v1/companies", companyRoutes)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 export { app };
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -47,6 +50,10 @@ app.use("/api/v1/it", itRouter)
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+export { app }
+>>>>>>> Stashed changes
+=======
 export { app }
 >>>>>>> Stashed changes
 =======
