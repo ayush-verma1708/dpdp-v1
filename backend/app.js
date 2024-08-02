@@ -27,13 +27,20 @@ app.use(cookieParser())
 // routes declaration
 app.use("/api/v1/companies", companyRoutes)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 export { app };
 =======
+=======
+>>>>>>> Stashed changes
 app.use("/api/v1/assets", assetRouter)
 app.use("/api/v1/scoped", scopedRouter)
 app.use("/api/v1/coverage", coverageRouter)
 app.use("/api/v1/business", businessRouter)
 app.use("/api/v1/it", itRouter)
+<<<<<<< Updated upstream
+export { app }
+>>>>>>> Stashed changes
+=======
 export { app }
 >>>>>>> Stashed changes

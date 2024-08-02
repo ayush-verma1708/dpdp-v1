@@ -1,17 +1,24 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { Asset } from '../models/asset.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { AsyncHandler } from '../utils/asyncHandler.js';
 =======
+=======
+>>>>>>> Stashed changes
 import { Asset } from "../models/asset.model.js";
 import { Scoped } from "../models/scoped.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { AsyncHandler } from "../utils/asyncHandler.js";
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 const getAssets = AsyncHandler(async (req, res) => {
   try {
     const assets = await Asset.find({});
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     res.json(assets)
   }
@@ -20,10 +27,15 @@ const getAssets = AsyncHandler(async (req, res) => {
     res.json(assets);
   } catch (err) {
 >>>>>>> Stashed changes
+=======
+    res.json(assets);
+  } catch (err) {
+>>>>>>> Stashed changes
     res.status(500).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 // @desc    Get asset by ID
 // @route   GET /api/assets/:id
@@ -34,10 +46,15 @@ const getAssetById = AsyncHandler(async (req, res) => {
 const getAssetById = AsyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id).populate("coverages");
 >>>>>>> Stashed changes
+=======
+const getAssetById = AsyncHandler(async (req, res) => {
+  const asset = await Asset.findById(req.params.id).populate("coverages");
+>>>>>>> Stashed changes
   if (asset) {
     res.json(asset);
   } else {
     res.status(404);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     throw new Error('Asset not found');
   }
@@ -57,6 +74,8 @@ const createAsset = AsyncHandler(async (req, res) => {
     new ApiResponse(201, createdAsset, "Crated Asset Successfully")
   );
 =======
+=======
+>>>>>>> Stashed changes
     throw new Error("Asset not found");
   }
 });
@@ -85,12 +104,16 @@ const createAsset = AsyncHandler(async (req, res) => {
     res
       .status(201)
       .json(new ApiResponse(201, createdAsset, "Created Asset Successfully"));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 // @desc    Update an asset
 // @route   PUT /api/assets/:id
@@ -106,6 +129,8 @@ const updateAsset = AsyncHandler(async (req, res) => {
       asset.desc = desc;
   
 =======
+=======
+>>>>>>> Stashed changes
 const updateAsset = AsyncHandler(async (req, res) => {
   try {
     const { name, desc } = req.body;
@@ -115,13 +140,20 @@ const updateAsset = AsyncHandler(async (req, res) => {
       asset.name = name;
       asset.desc = desc;
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       const updatedAsset = await asset.save();
       res.json(updatedAsset);
     } else {
       res.status(404);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       throw new Error('Asset not found');
+=======
+      throw new Error("Asset not found");
+>>>>>>> Stashed changes
 =======
       throw new Error("Asset not found");
 >>>>>>> Stashed changes
@@ -132,9 +164,12 @@ const updateAsset = AsyncHandler(async (req, res) => {
 });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // @desc    Delete an asset
 // @route   DELETE /api/assets/:id
 // @access  Public
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 const deleteAsset = AsyncHandler(async (req, res) => {
@@ -142,6 +177,7 @@ const deleteAsset = AsyncHandler(async (req, res) => {
 
   if (asset) {
     await asset.remove();
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     res.json({ message: 'Asset removed' });
   } else {
@@ -152,6 +188,8 @@ const deleteAsset = AsyncHandler(async (req, res) => {
 
 export { createAsset, getAssets, getAssetById, updateAsset, deleteAsset };
 =======
+=======
+>>>>>>> Stashed changes
     res.json({ message: "Asset removed" });
   } else {
     res.status(404);
@@ -172,5 +210,9 @@ export {
   updateAsset,
   deleteAsset,
   getScopedByAsset,
+<<<<<<< Updated upstream
+};
+>>>>>>> Stashed changes
+=======
 };
 >>>>>>> Stashed changes

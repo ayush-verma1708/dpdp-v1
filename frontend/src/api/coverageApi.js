@@ -1,14 +1,20 @@
 import axios from 'axios';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const API_URL_COVERAGE = 'http://localhost:8021/api/v1/coverages/';
 const API_URL_COVERAGE_IN_SCOPED = 'http://localhost:8021/api/v1/coverage/scopeds/';
 const API_URL_ADD_COVERAGE = 'http://localhost:8021/api/v1/coverage/add-coverage/';
 =======
+=======
+>>>>>>> Stashed changes
 const API_URL_COVERAGE = 'http://localhost:8021/api/v1/coverage/';
 //const API_URL_COVERAGE_COUNT = 'http://localhost:8021/api/v1/coverage/add-count';
 const API_URL_COVERAGE_IN_SCOPED = 'http://localhost:8021/api/v1/coverage/scopeds/';
 const API_URL_ADD_COVERAGE = 'http://localhost:8021/api/v1/coverage/add-coverage';
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 const API_URL_COVERAGE_DETAILS = 'http://localhost:8021/api/v1/coverage-details/';
 const API_URL_COVERAGE_UPDATE = 'http://localhost:8021/api/v1/coverage-update/';
@@ -20,17 +26,23 @@ export const getCoverages = async () => {
 };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export const getCoverageInScoped = async (scoped) => {
   // const data = await axios.get(API_URL_COVERAGE_IN_SCOPED)
   // return data
   try {
     const response = await axios.get(`${API_URL_COVERAGE_IN_SCOPED}${scoped}`);
 =======
+=======
+>>>>>>> Stashed changes
 export const getCoverageInScoped = async (scopedId) => {
   // const data = await axios.get(API_URL_COVERAGE_IN_SCOPED)
   // return data
   try {
     const response = await axios.get(`${API_URL_COVERAGE_IN_SCOPED}${scopedId}`);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     console.log(response.data);
     // Ensure response data is an array
@@ -45,7 +57,10 @@ export const getCoverageInScoped = async (scopedId) => {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 export const addCoverageCount = async (scopedCoverageCount) => {
   try {
     const response = await axios.post('http://localhost:8021/api/v1/coverage/add-count',{scopedCoverageCount});
@@ -55,6 +70,9 @@ export const addCoverageCount = async (scopedCoverageCount) => {
   }
 };
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 export const getCoverageById = async (id) => {
   const response = await axios.get(`${API_URL_COVERAGE_DETAILS}${id}`);
