@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     view: { type: Boolean, default: false },
     add: { type: Boolean, default: false },
     edit: { type: Boolean, default: false },
-  }
+  },
 }, { collection: 'users' });
 
 userSchema.methods.comparePassword = async function (password) {

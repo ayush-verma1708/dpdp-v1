@@ -57,16 +57,25 @@ const ControlsPage = () => {
     fetchData();
   }, []);
 
-  const handleAddControl = async () => {
+  // const handleAddControl = async () => {
+  //   try {
+  //     const response = await axios.post('http://localhost:8021/api/v1/controls', newControl);
+  //     setControls([...controls, response.data]);
+  //     setNewControl({ control_Id: '', name: '', description: '', control_Family_Id: '' });
+  //   } catch (error) {
+  //     console.error('Error adding control:', error.response ? error.response.data : error.message);
+  //   }
+  // };
+
+    const handleAddControl = async () => {
     try {
       const response = await axios.post('http://localhost:8021/api/v1/controls', newControl);
       setControls([...controls, response.data]);
-      setNewControl({ control_Id: '', name: '', description: '', control_Family_Id: '' });
+      setNewControl({ control_Id: '', name: '', description: '', control_Family_Id: '', criticality: '' });
     } catch (error) {
       console.error('Error adding control:', error.response ? error.response.data : error.message);
     }
   };
-
   const handleEditControl = async () => {
     try {
       await axios.put(`http://localhost:8021/api/v1/controls/${editingControl._id}`, editControl);
