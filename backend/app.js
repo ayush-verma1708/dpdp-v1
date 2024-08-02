@@ -9,6 +9,8 @@ import userRoutes from './routes/userRoutes.js'; // Ensure this path is correct
 import controlFamiliesRoutes from './routes/controlFamilyRoutes.js'; // Import control families routes
 import controlRoutes from './routes/controlRoutes.js'; // Import control routes
 import actionRoutes from './routes/actionRoutes.js'; // Import action routes
+import uploadRoutes from './routes/uploadRoutes.js'; // Import the new upload routes
+
 
 
 const app = express();
@@ -31,7 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/v1/control-families', controlFamiliesRoutes); // Add this line to handle control families
 app.use('/api/v1/controls', controlRoutes); // Add control routes
 app.use('/api/v1/actions', actionRoutes); // Add action routes
-
+app.use('/api/v1/uploads', uploadRoutes); // Add this line to handle file uploads
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

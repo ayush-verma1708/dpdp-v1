@@ -10,6 +10,11 @@ const controlSchema = new mongoose.Schema({
   isDPDPA: { type: Boolean, default: 0 },
   info: {
     actionsCount: { type: Number, default: 0 }
+  },
+  criticality: { 
+    type: String, 
+    enum: ['low', 'medium', 'high', 'critical'], 
+    required: true 
   }
 });
 
