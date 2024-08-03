@@ -1,5 +1,5 @@
 import User from '../models/User.js'; // Adjust the path if necessary
-import AsyncHandler from '../utils/asyncHandler.js'; // Ensure this utility exists
+import {AsyncHandler} from '../utils/asyncHandler.js'; // Ensure this utility exists
 import { ApiError } from '../utils/ApiError.js'; // Ensure this utility exists
 import { ApiResponse } from '../utils/ApiResponse.js'; // Ensure this utility exists
 

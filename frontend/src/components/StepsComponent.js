@@ -1,6 +1,6 @@
 // added header
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
-import './StepsComponent.css';
+import '../styles/StepsComponent.css'
 
 const initialState = {
   currentStep: 0,

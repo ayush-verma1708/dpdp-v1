@@ -24,21 +24,14 @@ const getAssetById = AsyncHandler(async (req, res) => {
 
 const createAsset = AsyncHandler(async (req, res) => {
   const {
-    name, type, desc, isScoped, criticality,
-    businessOwnerName, businessOwnerEmail, itOwnerName, itOwnerEmail
-  } = req.body;
+    name, type, desc, isScoped } = req.body;
 
   try {
     const newAsset = new Asset({
       name,
       type,
       desc,
-      isScoped,
-      criticality,
-      businessOwnerName,
-      businessOwnerEmail,
-      itOwnerName,
-      itOwnerEmail
+      isScoped
     });
 
     const createdAsset = await newAsset.save();

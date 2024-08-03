@@ -1,47 +1,26 @@
-// import React from 'react';
-// import AppBar from '@mui/material/AppBar';
-// import Toolbar from '@mui/material/Toolbar';
-// import Typography from '@mui/material/Typography';
+import React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 
-// const Header = () => {
-//   return (
-//     <AppBar position="static">
-//       <Toolbar>
-//         <Typography variant="h6">
-//           Company Directory
-//         </Typography>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// };
-
-// export default Header;
-
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
-
-const Header = ({ pageName }) => {
+const Header = ({ title, handleLogout }) => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6">
-          Company Directory
+    <AppBar position="static" sx={{ backgroundColor: "#f5f5f5" }}>
+      <Box display="flex" justifyContent="space-between" p={2}>
+        <Typography variant="body1" className="text-indigo-950">
+          {title}
         </Typography>
-        <Button color="inherit" onClick={handleLogout}>
-          Logout
-        </Button>
-      </Toolbar>
+        <Typography variant="body1">
+          <Button className="text-red-950" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Typography>
+      </Box>
     </AppBar>
   );
 };

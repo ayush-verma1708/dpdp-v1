@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AsyncHandler from '../utils/asyncHandler.js'; // Default import
+import {AsyncHandler} from '../utils/asyncHandler.js'; // Default import
 import { createUser, getUsers, updateUser, deleteUser } from '../controllers/user.controller.js';
 
 const userRoutes = Router();
