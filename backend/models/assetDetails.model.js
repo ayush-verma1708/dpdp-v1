@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Define the schema for AssetDetails
@@ -11,10 +11,9 @@ const assetDetailsSchema = new Schema({
   scoped: {
     type: Schema.Types.ObjectId,
     ref: 'Scoped',
-    required: true
   },
   criticality: {
-    type: Boolean,
+    type: String,
     required: true
   },
   businessOwnerName: {
@@ -34,10 +33,9 @@ const assetDetailsSchema = new Schema({
     required: true
   },
   coverages: {
-    totalCoverage: {
-      type: Number,
-      required: true
-    }
+    type: Number,
+    required: true,
+    default: 0
   }
 }, { timestamps: true });
 

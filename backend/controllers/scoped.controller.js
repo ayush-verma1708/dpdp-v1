@@ -29,7 +29,6 @@ const getScopedInAsset = AsyncHandler( async (req, res)=>{
 const addScoped = AsyncHandler( async (req, res) =>{
 
     const { name, desc, asset } = req.body;
-    console.log(req.body);
     if([name, desc, asset].some((fields) => fields?.trim() === "")){
         throw new ApiError(400, "All fields are required.")
     }

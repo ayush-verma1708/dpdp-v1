@@ -16,6 +16,7 @@ import {
   DialogTitle,
   Checkbox,
   FormControlLabel,
+  CircularProgress
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -31,47 +32,72 @@ const AssetList = () => {
   const [selectedAsset, setSelectedAsset] = useState("");
   const [selectedScoped, setSelectedScoped] = useState("");
   const [coverageCount, setCoverageCount] = useState("");
-  const [coverages, setCoverages] = useState([]);
+  const [assetDetails, setAssetDetails] = useState([]);
   const [editCoverageId, setEditCoverageId] = useState(null);
   const [newAssetDialogOpen, setNewAssetDialogOpen] = useState(false);
+  const [newScopedDialogOpen, setNewScopedDialogOpen] = useState(false);
   const [newAssetName, setNewAssetName] = useState("");
   const [newAssetType, setNewAssetType] = useState("");
   const [newAssetDesc, setNewAssetDesc] = useState("");
   const [newAssetIsScoped, setNewAssetIsScoped] = useState(false);
-  const [isScopedAsset, setIsScopedAsset] = useState(false);
+  const [newScopedName, setNewScopedName] = useState("");
+  const [newScopedDesc, setNewScopedDesc] = useState("");
+  const [newScopedAsset, setNewScopedAsset] = useState("");
+  const [isScopedAsset, setIsScopedAsset] = useState('');
   const [criticality, setCriticality] = useState(false);
   const [businessOwnerName, setBusinessOwnerName] = useState("");
   const [businessOwnerEmail, setBusinessOwnerEmail] = useState("");
   const [itOwnerName, setItOwnerName] = useState("");
   const [itOwnerEmail, setItOwnerEmail] = useState("");
-
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    asset: '',
+    scoped: '',
+    criticality: '',
+    businessOwnerName: '',
+    businessOwnerEmail: '',
+    itOwnerName: '',
+    itOwnerEmail: '',
+    coverages: 0,
+  });
+  
   useEffect(() => {
     const fetchAssets = async () => {
       const data = await getAssets();
       setAssets(data);
+      
+      if(data.isScoped === true){
+        setIsScopedAsset('Scoped');
+      }
+      else{
+        setIsScopedAsset('non-scoped');
+      }
     };
     fetchAssets();
   }, []);
 
-  useEffect(() => {
-    const fetchCoverages = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:8021/api/v1/coverage/"
-        );
-        setCoverages(data);
-      } catch (error) {
-        console.error("Error fetching coverages:", error);
+  const fetchAssetDetailData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8021/api/v1/assetDetails/');
+      
+      if (Array.isArray(response.data)) {
+        setAssetDetails(response.data);
+      } else {
+        setAssetDetails([]); // Handle cases where the data isn't an array
       }
-    };
+    } catch (error) {
+      console.error('Error fetching asset details:', error);
+    }
+  finally {
+    setLoading(false);
+  }
+  };
 
-    fetchCoverages(); // Initial fetch
+  useEffect(() => {
+    setLoading(true);
+    
 
-    const intervalId = setInterval(() => {
-      fetchCoverages(); // Fetch data every 30 seconds
-    }, 30000); // 30000 milliseconds = 30 seconds
-
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    fetchAssetDetailData();
   }, []);
 
   const handleAssetChange = async (event) => {
@@ -83,12 +109,7 @@ const AssetList = () => {
     try {
       const assetobj = assets.find((a) => a._id === assetId);
       if (assetobj) {
-        setIsScopedAsset(assetobj.isScoped);
-        setCriticality(assetobj.criticality);
-        setBusinessOwnerName(assetobj.businessOwnerName || "");
-        setBusinessOwnerEmail(assetobj.businessOwnerEmail || "");
-        setItOwnerName(assetobj.itOwnerName || "");
-        setItOwnerEmail(assetobj.itOwnerEmail || "");
+        
 
         const { data } = await axios.get(
           `http://localhost:8021/api/v1/assets/${assetId}/scoped`
@@ -109,30 +130,31 @@ const AssetList = () => {
     setSelectedScoped(event.target.value);
   };
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const newCoverage = {
+    
+    const newAssetDetails = {
       criticality,
       businessOwnerName,
       businessOwnerEmail,
       itOwnerName,
       itOwnerEmail,
-      assetId: selectedAsset,
+      asset: selectedAsset,
       scoped: selectedScoped || "non-scoped",
-      coverageCount: Number(coverageCount) || 0,
+      coverages: coverageCount
     };
 
     try {
       if (editCoverageId) {
         await axios.put(
-          `http://localhost:8021/api/v1/coverage/${editCoverageId}`,
-          newCoverage
+          `http://localhost:8021/api/v1/assetDetailss/${editCoverageId}`,
+          newAssetDetails
         );
       } else {
         await axios.post(
-          "http://localhost:8021/api/v1/coverage/add-coverage",
-          newCoverage
+          "http://localhost:8021/api/v1/assetDetails/add",
+          newAssetDetails
         );
       }
 
@@ -140,38 +162,39 @@ const AssetList = () => {
       setCoverageCount("");
       setEditCoverageId(null);
       setSelectedAsset("");
-      setCriticality(false);
+      setCriticality("");
       setBusinessOwnerName("");
       setBusinessOwnerEmail("");
       setItOwnerName("");
       setItOwnerEmail("");
 
       // Refresh coverage data after submission
-      const { data } = await axios.get(
-        "http://localhost:8021/api/v1/coverage/"
+      const data  = await axios.get(
+        "http://localhost:8021/api/v1/assetDetails/"
       );
-      setCoverages(data);
+      fetchAssetDetailData();
+      setAssetDetails(data);
     } catch (error) {
       console.error("Error submitting coverage data:", error);
     }
   };
 
-  const handleEdit = (coverage) => {
-    setEditCoverageId(coverage.id);
-    setSelectedAsset(coverage.scoped.asset?._id || "");
-    setSelectedScoped(coverage.scoped?._id || "");
-    setCoverageCount(coverage.coverageCount);
-    setCriticality(coverage.criticality);
-    setBusinessOwnerName(coverage.businessOwnerName);
-    setBusinessOwnerEmail(coverage.businessOwnerEmail);
-    setItOwnerName(coverage.itOwnerName);
-    setItOwnerEmail(coverage.itOwnerEmail);
+  const handleEdit = (assetDet) => {
+    setEditCoverageId(assetDet.id);
+    setSelectedAsset(assetDet.scoped.asset?._id || "");
+    setSelectedScoped(assetDet.scoped?._id || "");
+    setCoverageCount(assetDet.coverageCount);
+    setCriticality(assetDet.criticality);
+    setBusinessOwnerName(assetDet.businessOwnerName);
+    setBusinessOwnerEmail(assetDet.businessOwnerEmail);
+    setItOwnerName(assetDet.itOwnerName);
+    setItOwnerEmail(assetDet.itOwnerEmail);
   };
 
-  const handleDelete = async (coverageId) => {
+  const handleDelete = async (assetDetId) => {
     try {
-      await axios.delete(`http://localhost:8021/api/v1/coverage/${coverageId}`);
-      setCoverages(coverages.filter((coverage) => coverage._id !== coverageId));
+      await axios.delete(`http://localhost:8021/api/v1/assetDetails/${assetDetId}`);
+      setAssetDetails(assetDetails.filter((ad) => ad._id !== assetDetId));
     } catch (error) {
       console.error("Error deleting coverage:", error);
     }
@@ -179,6 +202,10 @@ const AssetList = () => {
 
   const handleOpenNewAssetDialog = () => {
     setNewAssetDialogOpen(true);
+  };
+
+  const handleOpenNewScopedDialog = () => {
+    setNewScopedDialogOpen(true);
   };
 
   const handleCriticalityChange = (event) => {
@@ -191,6 +218,12 @@ const AssetList = () => {
     setNewAssetType("");
     setNewAssetDesc("");
     setNewAssetIsScoped(false); // Reset new asset isScoped
+  };
+
+  const handleCloseNewScopedDialog = () => {
+    setNewScopedDialogOpen(false);
+    setNewScopedName("");
+    setNewScopedDesc("");
   };
 
   const handleAddAsset = async () => {
@@ -212,35 +245,55 @@ const AssetList = () => {
     }
   };
 
+  const handleAddScoped = async () => {
+    try {
+      await axios.post("http://localhost:8021/api/v1/scoped/add", {
+        name: newScopedName,
+        desc: newScopedDesc,
+        asset: selectedAsset, // Pass isScoped
+      });
+
+      // Refresh assets after adding a new one
+      const { data } = await axios.get(
+          `http://localhost:8021/api/v1/assets/${selectedAsset}/scoped`);
+      console.log(data);
+      
+      setScoped(data);
+
+      handleCloseNewScopedDialog();
+    } catch (error) {
+      console.error("Error adding new asset:", error);
+    }
+  };
+
+  const handleEditClick = (id) => {
+    const selectedDetail = assetDetails.find(detail => detail._id === id);
+    if (selectedDetail) {
+      setFormData({
+        asset: selectedDetail.asset,
+        scoped: selectedDetail.scoped,
+        criticality: selectedDetail.criticality,
+        businessOwnerName: selectedDetail.businessOwnerName,
+        businessOwnerEmail: selectedDetail.businessOwnerEmail,
+        itOwnerName: selectedDetail.itOwnerName,
+        itOwnerEmail: selectedDetail.itOwnerEmail,
+        coverages: selectedDetail.coverages,
+      });
+    }
+  };
+
+
   const columns = [
-    { field: "id", headerName: "ID", width: 230 },
-    { field: "assetName", headerName: "Asset Name", width: 200 },
-    { field: "scopedName", headerName: "Scoped Name", width: 280 },
-    {
-      field: "coverageCount",
-      headerName: "Coverages",
-      type: "number",
-      width: 120,
-    },
-    {
-      field: "criticality",
-      headerName: "Criticality",
-      width: 150,
-      renderCell: (params) => (params.row.criticality ? "Yes" : "No"),
-    },
-    {
-      field: "businessOwnerName",
-      headerName: "Business Owner Name",
-      width: 200,
-    },
-    {
-      field: "businessOwnerEmail",
-      headerName: "Business Owner Email",
-      width: 200,
-    },
-    { field: "itOwnerName", headerName: "IT Owner Name", width: 200 },
-    { field: "itOwnerEmail", headerName: "IT Owner Email", width: 200 },
-    { field: "createdAt", headerName: "Created Date", width: 170 },
+    { field: 'id', headerName: 'ID', width: 230 },
+    { field: 'asset', headerName: 'Asset', width: 150 },
+    { field: 'scoped', headerName: 'Scoped', width: 150 },
+    { field: 'criticality', headerName: 'Criticality', width: 150 },
+    { field: 'businessOwnerName', headerName: 'Business Owner Name', width: 200 },
+    { field: 'businessOwnerEmail', headerName: 'Business Owner Email', width: 250 },
+    { field: 'itOwnerName', headerName: 'IT Owner Name', width: 200 },
+    { field: 'itOwnerEmail', headerName: 'IT Owner Email', width: 250 },
+    { field: 'coverages', headerName: 'Coverages', width: 150 },
+    { field: 'createdAt', headerName: 'Created Date', width: 150 },
     {
       field: "actions",
       headerName: "Actions",
@@ -258,21 +311,27 @@ const AssetList = () => {
     },
   ];
 
-  const rows = coverages.map((coverage) => ({
-    id: coverage._id,
-    assetName: coverage.scoped?.asset
-      ? coverage.scoped.asset.name
-      : "non-scoped",
-    scopedName: coverage.scoped ? coverage.scoped.name : "N/A",
-    coverageCount: coverage.coverageCount,
-    businessOwnerName: coverage.businessOwnerName || "N/A",
-    businessOwnerEmail: coverage.businessOwnerEmail || "N/A",
-    itOwnerName: coverage.itOwnerName || "N/A",
-    itOwnerEmail: coverage.itOwnerEmail || "N/A",
-    createdAt: moment(coverage.createdAt).format("YYYY-MM-DD HH:mm"),
-  }));
+  const rows = Array.isArray(assetDetails) ? assetDetails.map((detail, index) => {
+    try {
+      return {
+        id: detail._id || '',  // Assign the MongoDB ObjectId as the unique id for DataGrid
+        asset: detail.asset ? detail.asset.name : 'Unknown Asset',
+        scoped: detail.scoped ? detail.scoped.name : 'non-scoped',
+        criticality: detail.criticality || 'N/A',
+        businessOwnerName: detail.businessOwnerName || 'N/A',
+        businessOwnerEmail: detail.businessOwnerEmail || 'N/A',
+        itOwnerName: detail.itOwnerName || 'N/A',
+        itOwnerEmail: detail.itOwnerEmail || 'N/A',
+        coverages: detail.coverages || 0,
+        createdAt : moment(detail.createdAt).format("YYYY-MM-DD HH:mm"),
+      };
+    } catch (error) {
+      console.error('Error processing detail at index', index, ':', error);
+      return { id: '', asset: 'Error', scoped: 'Error', criticality: 'Error', coverages: 0 };
+    }
+  }) : [];
+  
 
-  // Define the initial sort model
   const sortModel = [
     {
       field: "createdAt",
@@ -323,7 +382,17 @@ const AssetList = () => {
                       onChange={handleScopedChange}
                       label="Scoped"
                     >
-                      {scoped.map((scope) => (
+                      <MenuItem key="add-new-asset" value="">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<AddIcon />}
+                      onClick={handleOpenNewScopedDialog}
+                    >
+                      Add New Scoped
+                    </Button>
+                  </MenuItem>
+                  {scoped.map((scope) => (
                         <MenuItem key={scope._id} value={scope._id}>
                           {scope.name}
                         </MenuItem>
@@ -417,22 +486,22 @@ const AssetList = () => {
           </Grid>
         </form>
 
-        <Typography
-          variant="h5"
-          component="h2"
-          gutterBottom
         
-        >
-          Asset Data
-        </Typography>
 
-        <div style={{ height: 400, width: "100%" }}>
+        <div style={{ height: 400, width: "100%", marginTop: "10px" }}>
+        {loading ? (
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          <CircularProgress />
+        </div>
+      ) : (
           <DataGrid
             rows={rows}
             columns={columns}
             pageSize={5}
             sortModel={sortModel}
-          />
+            rowsPerPageOptions={[10]}
+          />)
+      }
         </div>
         <Dialog open={newAssetDialogOpen} onClose={handleCloseNewAssetDialog}>
           <DialogTitle>Add New Asset</DialogTitle>
@@ -480,6 +549,36 @@ const AssetList = () => {
               Cancel
             </Button>
             <Button onClick={handleAddAsset} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={newScopedDialogOpen} onClose={handleCloseNewScopedDialog}>
+          <DialogTitle>Add New Scoped</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Name"
+              type="text"
+              fullWidth
+              value={newScopedName}
+              onChange={(e) => setNewScopedName(e.target.value)}
+            />
+            <TextField
+              margin="dense"
+              label="Description"
+              type="text"
+              fullWidth
+              value={newScopedDesc}
+              onChange={(e) => setNewScopedDesc(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseNewScopedDialog} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleAddScoped} color="primary">
               Add
             </Button>
           </DialogActions>

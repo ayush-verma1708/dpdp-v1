@@ -15,6 +15,7 @@ import controlFamiliesRoutes from './routes/controlFamilyRoutes.js'; // Import c
 import controlRoutes from './routes/controlRoutes.js'; // Import control routes
 import actionRoutes from './routes/actionRoutes.js'; // Import action routes
 import uploadRoutes from './routes/uploadRoutes.js'; // Import the new upload routes
+import assetDetailRouter from './routes/assetDetail.routes.js';
 
 
 
@@ -50,6 +51,7 @@ app.use('/api/v1/control-families', controlFamiliesRoutes); // Add this line to 
 app.use('/api/v1/controls', controlRoutes); // Add control routes
 app.use('/api/v1/actions', actionRoutes); // Add action routes
 app.use('/api/v1/uploads', uploadRoutes); // Add this line to handle file uploads
+app.use('/api/v1/assetDetails', assetDetailRouter);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
