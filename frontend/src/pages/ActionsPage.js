@@ -1,49 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/ActionTable.css';
-import axios from 'axios';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Loading from '../components/Loading'; // Import the Loading component
-import { Box, Grid } from '@mui/material';
-import { getAssets } from '../api/assetApi';
+import React, { useEffect, useState } from "react";
+import "../styles/ActionTable.css";
+import axios from "axios";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import TablePagination from "@mui/material/TablePagination";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Loading from "../components/Loading"; // Import the Loading component
+import { Box } from "@mui/material";
 
 const ActionsPage = () => {
   const [actions, setActions] = useState([]);
   const [controls, setControls] = useState([]);
-  const [newAction, setNewAction] = useState({ action_Id: '', name: '', description: '', control_Id: '' });
+  const [newAction, setNewAction] = useState({
+    action_Id: "",
+    name: "",
+    description: "",
+    control_Id: "",
+  });
   const [editingAction, setEditingAction] = useState(null);
-  const [editAction, setEditAction] = useState({ action_Id: '', name: '', description: '', control_Id: '' });
+  const [editAction, setEditAction] = useState({
+    action_Id: "",
+    name: "",
+    description: "",
+    control_Id: "",
+  });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
-  const [assets, setAssets] = useState([]);
-  const [scoped, setScoped] = useState([]);  
-  const [selectedAsset, setSelectedAsset] = useState("");
-  const [selectedScoped, setSelectedScoped] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [actionsResponse, controlsResponse] = await Promise.all([
-          axios.get('http://localhost:8021/api/v1/actions'),
-          axios.get('http://localhost:8021/api/v1/controls'),
+          axios.get("http://localhost:8021/api/v1/actions"),
+          axios.get("http://localhost:8021/api/v1/controls"),
         ]);
         setActions(actionsResponse.data);
         setControls(controlsResponse.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // Set loading to false after fetching data
       }
@@ -52,70 +57,64 @@ const ActionsPage = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchAssets = async () => {
-      const data = await getAssets();
-      setAssets(data);
-    };
-    fetchAssets();
-  }, []);
-
-  const handleAssetChange = async (event) => {
-    const assetId = event.target.value;
-    setSelectedAsset(assetId);
-    setSelectedScoped("");
-
-    try {
-      const assetobj = assets.find((a) => a._id === assetId);
-      if (assetobj) {
-        const { data } = await axios.get(
-          `http://localhost:8021/api/v1/assets/${assetId}/scoped`
-        );
-        if (Array.isArray(data) && data.length > 0) {
-          setScoped(data);
-        }
-      } else {
-        setScoped([]); // Set to empty array if no data is returned
-      }
-    } catch (error) {
-      console.error("Error fetching scoped data:", error);
-      setScoped([]);
-    }
-  };
-  
-  const handleScopedChange = (event) => {
-    setSelectedScoped(event.target.value);
-  };
-
   const handleAddAction = async () => {
     try {
-      const response = await axios.post('http://localhost:8021/api/v1/actions', newAction);
+      const response = await axios.post(
+        "http://localhost:8021/api/v1/actions",
+        newAction
+      );
       setActions([...actions, response.data]);
-      setNewAction({ action_Id: '', name: '', description: '', control_Id: '' });
+      setNewAction({
+        action_Id: "",
+        name: "",
+        description: "",
+        control_Id: "",
+      });
     } catch (error) {
-      console.error('Error adding action:', error.response ? error.response.data : error.message);
+      console.error(
+        "Error adding action:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   const handleEditAction = async () => {
     try {
-      await axios.put(`http://localhost:8021/api/v1/actions/${editingAction._id}`, editAction);
-      setActions(actions.map(action =>
-        action._id === editingAction._id ? { ...action, ...editAction } : action
-      ));
+      await axios.put(
+        `http://localhost:8021/api/v1/actions/${editingAction._id}`,
+        editAction
+      );
+      setActions(
+        actions.map((action) =>
+          action._id === editingAction._id
+            ? { ...action, ...editAction }
+            : action
+        )
+      );
       setEditingAction(null);
-      setEditAction({ action_Id: '', name: '', description: '', control_Id: '' });
+      setEditAction({
+        action_Id: "",
+        name: "",
+        description: "",
+        control_Id: "",
+      });
     } catch (error) {
-      console.error('Error updating action:', error.response ? error.response.data : error.message);
+      console.error(
+        "Error updating action:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   const handleDeleteAction = async (id) => {
     try {
       await axios.delete(`http://localhost:8021/api/v1/actions/${id}`);
-      setActions(actions.filter(action => action._id !== id));
+      setActions(actions.filter((action) => action._id !== id));
     } catch (error) {
-      console.error('Error deleting action:', error.response ? error.response.data : error.message);
+      console.error(
+        "Error deleting action:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -137,110 +136,136 @@ const ActionsPage = () => {
       {/* <h2>Actions</h2> */}
       <div className="action-form">
         {/* <h3>{editingAction ? 'Edit Action' : 'Add New Action'}</h3> */}
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          editingAction ? handleEditAction() : handleAddAction();
-        }}>
-               <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-evenly', // Align elements to the left and right
-                gap: 2,
-                width: '100%', // Ensures the container takes full width
-            }}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            editingAction ? handleEditAction() : handleAddAction();
+          }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly", // Align elements to the left and right
+              gap: 2,
+              width: "100%", // Ensures the container takes full width
+            }}
+          >
             {/* Left-aligned text fields and dropdowns */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <TextField
-            label="Name"
-            value={editingAction ? editAction.name : newAction.name}
-            onChange={(e) => editingAction ? setEditAction({ ...editAction, name: e.target.value }) : setNewAction({ ...newAction, name: e.target.value })}
-            required
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Description"
-            value={editingAction ? editAction.description : newAction.description}
-            onChange={(e) => editingAction ? setEditAction({ ...editAction, description: e.target.value }) : setNewAction({ ...newAction, description: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Action ID"
-            value={editingAction ? editAction.action_Id : newAction.action_Id}
-            onChange={(e) => editingAction ? setEditAction({ ...editAction, action_Id: e.target.value }) : setNewAction({ ...newAction, action_Id: e.target.value })}
-            required
-            fullWidth
-            margin="normal"
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Control</InputLabel>
-            <Select
-            labelId='Controls-label'
-            label='Controls'
-              value={editingAction ? editAction.control_Id : newAction.control_Id}
-              onChange={(e) => editingAction ? setEditAction({ ...editAction, control_Id: e.target.value }) : setNewAction({ ...newAction, control_Id: e.target.value })}
-              required
-            >
-              <MenuItem value="" disabled>Select Control</MenuItem>
-              {controls.map((control) => (
-                <MenuItem key={control._id} value={control._id}>{control.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <TextField
+                label="Name"
+                value={editingAction ? editAction.name : newAction.name}
+                onChange={(e) =>
+                  editingAction
+                    ? setEditAction({ ...editAction, name: e.target.value })
+                    : setNewAction({ ...newAction, name: e.target.value })
+                }
+                required
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Description"
+                value={
+                  editingAction ? editAction.description : newAction.description
+                }
+                onChange={(e) =>
+                  editingAction
+                    ? setEditAction({
+                        ...editAction,
+                        description: e.target.value,
+                      })
+                    : setNewAction({
+                        ...newAction,
+                        description: e.target.value,
+                      })
+                }
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Action ID"
+                value={
+                  editingAction ? editAction.action_Id : newAction.action_Id
+                }
+                onChange={(e) =>
+                  editingAction
+                    ? setEditAction({
+                        ...editAction,
+                        action_Id: e.target.value,
+                      })
+                    : setNewAction({ ...newAction, action_Id: e.target.value })
+                }
+                required
+                fullWidth
+                margin="normal"
+              />
               <FormControl fullWidth margin="normal">
-                <InputLabel id="asset-label">Asset</InputLabel>
+                <InputLabel>Control</InputLabel>
                 <Select
-                  labelId="asset-label"
-                  value={selectedAsset}
-                  onChange={handleAssetChange}
-                  label="Asset"
+                  labelId="Controls-label"
+                  label="Controls"
+                  value={
+                    editingAction ? editAction.control_Id : newAction.control_Id
+                  }
+                  onChange={(e) =>
+                    editingAction
+                      ? setEditAction({
+                          ...editAction,
+                          control_Id: e.target.value,
+                        })
+                      : setNewAction({
+                          ...newAction,
+                          control_Id: e.target.value,
+                        })
+                  }
+                  required
                 >
-                  {assets.map((asset) => (
-                    <MenuItem key={asset._id} value={asset._id}>
-                      {asset.name} - {asset.type} (
-                      {asset.isScoped ? "Scoped" : "Non-Scoped"})
+                  <MenuItem value="" disabled>
+                    Select Control
+                  </MenuItem>
+                  {controls.map((control) => (
+                    <MenuItem key={control._id} value={control._id}>
+                      {control.name}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-            {selectedAsset &&
-              assets.find((a) => a._id === selectedAsset)?.isScoped && (
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>Scoped</InputLabel>
-                    <Select
-                      value={selectedScoped}
-                      onChange={handleScopedChange}
-                      label="Scoped"
-                    >
-                      {scoped.map((scope) => (
-                        <MenuItem key={scope._id} value={scope._id}>
-                          {scope.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+              
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{
+                  height: "50px",
+                  minWidth: "100px",
+                  padding: "0 16px",
+                  marginTop: "10px",
+                }}
+              >
+                {editingAction ? "Save" : "Add"}
+              </Button>
+              {editingAction && (
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => {
+                    setEditingAction(null);
+                    setEditAction({
+                      action_Id: "",
+                      name: "",
+                      description: "",
+                      control_Id: "",
+                    });
+                  }}
+                >
+                  Cancel
+                </Button>
               )}
-          <Button type="submit" variant="contained" color="primary" sx={{
-                    height: '50px',
-                    minWidth: '100px',
-                    padding: '0 16px', 
-                    marginTop: '10px'
-                }}>
-            {editingAction ? 'Save' : 'Add'}
-          </Button>
-          {editingAction && <Button type="button" variant="outlined" color="secondary" onClick={() => { setEditingAction(null); setEditAction({ action_Id: '', name: '', description: '', control_Id: '' }); }}>Cancel</Button>}
             </Box>
-            </Box>
-           
-          
-         
-          
-          
-          
-          
+          </Box>
         </form>
       </div>
       <TableContainer component={Paper} style={{ marginTop: "1rem" }}>
@@ -255,33 +280,38 @@ const ActionsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {actions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((action) => (
-              <TableRow key={action._id}>
-                <TableCell>{action.action_Id}</TableCell>
-                <TableCell>{action.name}</TableCell>
-                <TableCell>{action.description}</TableCell>
-                <TableCell>{action.control_Id.name}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => { setEditingAction(action); setEditAction(action); }}
-                    disabled={action.isDPDPA}
-                    style={{ marginRight: '10px' }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleDeleteAction(action._id)}
-                    disabled={action.isDPDPA}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {actions
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((action) => (
+                <TableRow key={action._id}>
+                  <TableCell>{action.action_Id}</TableCell>
+                  <TableCell>{action.name}</TableCell>
+                  <TableCell>{action.description}</TableCell>
+                  <TableCell>{action.control_Id.name}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setEditingAction(action);
+                        setEditAction(action);
+                      }}
+                      disabled={action.isDPDPA}
+                      style={{ marginRight: "10px" }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleDeleteAction(action._id)}
+                      disabled={action.isDPDPA}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -721,7 +751,7 @@ export default ActionsPage;
 // //   return (
 // //     <div className="actions-container">
 // //       <h2>Actions</h2>
-      
+
 // //       <div className="action-form">
 // //         <h3>{editingAction ? 'Edit Action' : 'Add New Action'}</h3>
 // //         <form onSubmit={(e) => {
@@ -862,7 +892,7 @@ export default ActionsPage;
 // // //   return (
 // // //     <div className="actions-container">
 // // //       <h2>Actions</h2>
-      
+
 // // //       <div className="action-form">
 // // //         <h3>{editingAction ? 'Edit Action' : 'Add New Action'}</h3>
 // // //         <form onSubmit={(e) => {

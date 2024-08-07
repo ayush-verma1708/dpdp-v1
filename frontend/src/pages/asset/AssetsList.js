@@ -7,16 +7,13 @@ import {
   TextField,
   Button,
   Container,
-  Grid,
-  Typography,
   IconButton,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Checkbox,
-  FormControlLabel,
-  CircularProgress
+  CircularProgress,
+  Box,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -42,60 +39,41 @@ const AssetList = () => {
   const [newAssetIsScoped, setNewAssetIsScoped] = useState(false);
   const [newScopedName, setNewScopedName] = useState("");
   const [newScopedDesc, setNewScopedDesc] = useState("");
-  const [newScopedAsset, setNewScopedAsset] = useState("");
-  const [isScopedAsset, setIsScopedAsset] = useState('');
   const [criticality, setCriticality] = useState(false);
   const [businessOwnerName, setBusinessOwnerName] = useState("");
   const [businessOwnerEmail, setBusinessOwnerEmail] = useState("");
   const [itOwnerName, setItOwnerName] = useState("");
   const [itOwnerEmail, setItOwnerEmail] = useState("");
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
-    asset: '',
-    scoped: '',
-    criticality: '',
-    businessOwnerName: '',
-    businessOwnerEmail: '',
-    itOwnerName: '',
-    itOwnerEmail: '',
-    coverages: 0,
-  });
-  
+
   useEffect(() => {
     const fetchAssets = async () => {
       const data = await getAssets();
       setAssets(data);
-      
-      if(data.isScoped === true){
-        setIsScopedAsset('Scoped');
-      }
-      else{
-        setIsScopedAsset('non-scoped');
-      }
     };
     fetchAssets();
   }, []);
 
   const fetchAssetDetailData = async () => {
     try {
-      const response = await axios.get('http://localhost:8021/api/v1/assetDetails/');
-      
+      const response = await axios.get(
+        "http://localhost:8021/api/v1/assetDetails/"
+      );
+
       if (Array.isArray(response.data)) {
         setAssetDetails(response.data);
       } else {
         setAssetDetails([]); // Handle cases where the data isn't an array
       }
     } catch (error) {
-      console.error('Error fetching asset details:', error);
+      console.error("Error fetching asset details:", error);
+    } finally {
+      setLoading(false);
     }
-  finally {
-    setLoading(false);
-  }
   };
 
   useEffect(() => {
     setLoading(true);
-    
 
     fetchAssetDetailData();
   }, []);
@@ -108,9 +86,9 @@ const AssetList = () => {
 
     try {
       const assetobj = assets.find((a) => a._id === assetId);
+      console.log(assetobj);
+      
       if (assetobj) {
-        
-
         const { data } = await axios.get(
           `http://localhost:8021/api/v1/assets/${assetId}/scoped`
         );
@@ -130,10 +108,9 @@ const AssetList = () => {
     setSelectedScoped(event.target.value);
   };
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const newAssetDetails = {
       criticality,
       businessOwnerName,
@@ -142,7 +119,7 @@ const AssetList = () => {
       itOwnerEmail,
       asset: selectedAsset,
       scoped: selectedScoped || "non-scoped",
-      coverages: coverageCount
+      coverages: coverageCount,
     };
 
     try {
@@ -169,7 +146,7 @@ const AssetList = () => {
       setItOwnerEmail("");
 
       // Refresh coverage data after submission
-      const data  = await axios.get(
+      const data = await axios.get(
         "http://localhost:8021/api/v1/assetDetails/"
       );
       fetchAssetDetailData();
@@ -193,7 +170,9 @@ const AssetList = () => {
 
   const handleDelete = async (assetDetId) => {
     try {
-      await axios.delete(`http://localhost:8021/api/v1/assetDetails/${assetDetId}`);
+      await axios.delete(
+        `http://localhost:8021/api/v1/assetDetails/${assetDetId}`
+      );
       setAssetDetails(assetDetails.filter((ad) => ad._id !== assetDetId));
     } catch (error) {
       console.error("Error deleting coverage:", error);
@@ -255,9 +234,10 @@ const AssetList = () => {
 
       // Refresh assets after adding a new one
       const { data } = await axios.get(
-          `http://localhost:8021/api/v1/assets/${selectedAsset}/scoped`);
+        `http://localhost:8021/api/v1/assets/${selectedAsset}/scoped`
+      );
       console.log(data);
-      
+
       setScoped(data);
 
       handleCloseNewScopedDialog();
@@ -265,35 +245,26 @@ const AssetList = () => {
       console.error("Error adding new asset:", error);
     }
   };
-
-  const handleEditClick = (id) => {
-    const selectedDetail = assetDetails.find(detail => detail._id === id);
-    if (selectedDetail) {
-      setFormData({
-        asset: selectedDetail.asset,
-        scoped: selectedDetail.scoped,
-        criticality: selectedDetail.criticality,
-        businessOwnerName: selectedDetail.businessOwnerName,
-        businessOwnerEmail: selectedDetail.businessOwnerEmail,
-        itOwnerName: selectedDetail.itOwnerName,
-        itOwnerEmail: selectedDetail.itOwnerEmail,
-        coverages: selectedDetail.coverages,
-      });
-    }
-  };
-
-
+  
   const columns = [
-    { field: 'id', headerName: 'ID', width: 230 },
-    { field: 'asset', headerName: 'Asset', width: 150 },
-    { field: 'scoped', headerName: 'Scoped', width: 150 },
-    { field: 'criticality', headerName: 'Criticality', width: 150 },
-    { field: 'businessOwnerName', headerName: 'Business Owner Name', width: 200 },
-    { field: 'businessOwnerEmail', headerName: 'Business Owner Email', width: 250 },
-    { field: 'itOwnerName', headerName: 'IT Owner Name', width: 200 },
-    { field: 'itOwnerEmail', headerName: 'IT Owner Email', width: 250 },
-    { field: 'coverages', headerName: 'Coverages', width: 150 },
-    { field: 'createdAt', headerName: 'Created Date', width: 150 },
+    { field: "id", headerName: "ID", width: 230 },
+    { field: "asset", headerName: "Asset", width: 150 },
+    { field: "scoped", headerName: "Scoped", width: 150 },
+    { field: "criticality", headerName: "Criticality", width: 150 },
+    {
+      field: "businessOwnerName",
+      headerName: "Business Owner Name",
+      width: 200,
+    },
+    {
+      field: "businessOwnerEmail",
+      headerName: "Business Owner Email",
+      width: 250,
+    },
+    { field: "itOwnerName", headerName: "IT Owner Name", width: 200 },
+    { field: "itOwnerEmail", headerName: "IT Owner Email", width: 250 },
+    { field: "coverages", headerName: "Coverages", width: 150 },
+    { field: "createdAt", headerName: "Created Date", width: 150 },
     {
       field: "actions",
       headerName: "Actions",
@@ -311,26 +282,33 @@ const AssetList = () => {
     },
   ];
 
-  const rows = Array.isArray(assetDetails) ? assetDetails.map((detail, index) => {
-    try {
-      return {
-        id: detail._id || '',  // Assign the MongoDB ObjectId as the unique id for DataGrid
-        asset: detail.asset ? detail.asset.name : 'Unknown Asset',
-        scoped: detail.scoped ? detail.scoped.name : 'non-scoped',
-        criticality: detail.criticality || 'N/A',
-        businessOwnerName: detail.businessOwnerName || 'N/A',
-        businessOwnerEmail: detail.businessOwnerEmail || 'N/A',
-        itOwnerName: detail.itOwnerName || 'N/A',
-        itOwnerEmail: detail.itOwnerEmail || 'N/A',
-        coverages: detail.coverages || 0,
-        createdAt : moment(detail.createdAt).format("YYYY-MM-DD HH:mm"),
-      };
-    } catch (error) {
-      console.error('Error processing detail at index', index, ':', error);
-      return { id: '', asset: 'Error', scoped: 'Error', criticality: 'Error', coverages: 0 };
-    }
-  }) : [];
-  
+  const rows = Array.isArray(assetDetails)
+    ? assetDetails.map((detail, index) => {
+        try {
+          return {
+            id: detail._id || "", // Assign the MongoDB ObjectId as the unique id for DataGrid
+            asset: detail.asset ? detail.asset.name : "Unknown Asset",
+            scoped: detail.scoped ? detail.scoped.name : "non-scoped",
+            criticality: detail.criticality || "N/A",
+            businessOwnerName: detail.businessOwnerName || "N/A",
+            businessOwnerEmail: detail.businessOwnerEmail || "N/A",
+            itOwnerName: detail.itOwnerName || "N/A",
+            itOwnerEmail: detail.itOwnerEmail || "N/A",
+            coverages: detail.coverages || 0,
+            createdAt: moment(detail.createdAt).format("YYYY-MM-DD HH:mm"),
+          };
+        } catch (error) {
+          console.error("Error processing detail at index", index, ":", error);
+          return {
+            id: "",
+            asset: "Error",
+            scoped: "Error",
+            criticality: "Error",
+            coverages: 0,
+          };
+        }
+      })
+    : [];
 
   const sortModel = [
     {
@@ -341,48 +319,51 @@ const AssetList = () => {
 
   return (
     <>
-      <Container>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={3}>
+      <form onSubmit={handleSubmit}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",            
+            gap: "15px",
+          }}
+        >
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="asset-label">Asset</InputLabel>
+            <Select
+              labelId="asset-label"
+              value={selectedAsset}
+              onChange={handleAssetChange}
+              label="Asset"
+            >
+              <MenuItem key="add-new-asset" value="">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={handleOpenNewAssetDialog}
+                >
+                  Add New Asset
+                </Button>
+              </MenuItem>
+              {assets.map((asset) => (
+                <MenuItem key={asset._id} value={asset._id}>
+                  {asset.name} - {asset.type} (
+                  {asset.isScoped ? "Scoped" : "Non-Scoped"})
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {selectedAsset &&
+            assets.find((a) => a._id === selectedAsset)?.isScoped && (
               <FormControl fullWidth margin="normal">
-                <InputLabel id="asset-label">Asset</InputLabel>
+                <InputLabel>Scoped</InputLabel>
                 <Select
-                  labelId="asset-label"
-                  value={selectedAsset}
-                  onChange={handleAssetChange}
-                  label="Asset"
+                  value={selectedScoped}
+                  onChange={handleScopedChange}
+                  label="Scoped"
                 >
                   <MenuItem key="add-new-asset" value="">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      startIcon={<AddIcon />}
-                      onClick={handleOpenNewAssetDialog}
-                    >
-                      Add New Asset
-                    </Button>
-                  </MenuItem>
-                  {assets.map((asset) => (
-                    <MenuItem key={asset._id} value={asset._id}>
-                      {asset.name} - {asset.type} (
-                      {asset.isScoped ? "Scoped" : "Non-Scoped"})
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            {selectedAsset &&
-              assets.find((a) => a._id === selectedAsset)?.isScoped && (
-                <Grid item xs={12} sm={3}>
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel>Scoped</InputLabel>
-                    <Select
-                      value={selectedScoped}
-                      onChange={handleScopedChange}
-                      label="Scoped"
-                    >
-                      <MenuItem key="add-new-asset" value="">
                     <Button
                       variant="outlined"
                       color="primary"
@@ -393,115 +374,114 @@ const AssetList = () => {
                     </Button>
                   </MenuItem>
                   {scoped.map((scope) => (
-                        <MenuItem key={scope._id} value={scope._id}>
-                          {scope.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              )}
-            {selectedScoped && (
-              <Grid item xs={12} sm={3}>
-                <TextField
-                  label="Coverage Count"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={coverageCount}
-                  onChange={(e) => setCoverageCount(e.target.value)}
-                />
-              </Grid>
+                    <MenuItem key={scope._id} value={scope._id}>
+                      {scope.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
-            {selectedAsset && (
-              <>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    label="Business Owner Name"
-                    fullWidth
-                    margin="normal"
-                    value={businessOwnerName}
-                    onChange={(e) => setBusinessOwnerName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    label="Business Owner Email"
-                    fullWidth
-                    margin="normal"
-                    value={businessOwnerEmail}
-                    onChange={(e) => setBusinessOwnerEmail(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    label="IT Owner Name"
-                    fullWidth
-                    margin="normal"
-                    value={itOwnerName}
-                    onChange={(e) => setItOwnerName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    label="IT Owner Email"
-                    fullWidth
-                    margin="normal"
-                    value={itOwnerEmail}
-                    onChange={(e) => setItOwnerEmail(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <FormControl fullWidth margin="normal">
-                    <InputLabel id="criticality-label">Criticality</InputLabel>
-                    <Select
-                      labelId="criticality-label"
-                      id="criticality"
-                      value={criticality}
-                      onChange={handleCriticalityChange}
-                      label="Criticality"
-                    >
-                      <MenuItem value="High">High</MenuItem>
-                      <MenuItem value="Medium">Medium</MenuItem>
-                      <MenuItem value="Low">Low</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </>
-            )}
-            <Grid item xs={12} sm={1}>
+          {selectedScoped && (
+            <TextField
+              label="Coverage Count"
+              type="number"
+              fullWidth
+              margin="normal"
+              value={coverageCount}
+              onChange={(e) => setCoverageCount(e.target.value)}
+            />
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: "15px",
+          }}
+        >
+          {selectedAsset && (
+            <>
+              <TextField
+                label="Business Owner Name"
+                fullWidth
+                margin="normal"
+                value={businessOwnerName}
+                onChange={(e) => setBusinessOwnerName(e.target.value)}
+              />
+              <TextField
+                label="Business Owner Email"
+                fullWidth
+                margin="normal"
+                value={businessOwnerEmail}
+                onChange={(e) => setBusinessOwnerEmail(e.target.value)}
+              />
+              <TextField
+                label="IT Owner Name"
+                fullWidth
+                margin="normal"
+                value={itOwnerName}
+                onChange={(e) => setItOwnerName(e.target.value)}
+              />
+              <TextField
+                label="IT Owner Email"
+                fullWidth
+                margin="normal"
+                value={itOwnerEmail}
+                onChange={(e) => setItOwnerEmail(e.target.value)}
+              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="criticality-label">Criticality</InputLabel>
+                <Select
+                  labelId="criticality-label"
+                  id="criticality"
+                  value={criticality}
+                  onChange={handleCriticalityChange}
+                  label="Criticality"
+                >
+                  <MenuItem value="High">High</MenuItem>
+                  <MenuItem value="Medium">Medium</MenuItem>
+                  <MenuItem value="Low">Low</MenuItem>
+                </Select>
+              </FormControl>
               <Button
                 type="submit"
                 variant="contained"
+                fullWidth
                 sx={{
-                  height: '50px',
-                  padding: '0 16px', // Adjust padding as necessary
-              }}
+                  height: "50px",
+                }}
                 color="primary"
-                style={{ marginTop: '5px' }}
+                style={{ marginTop: "5px" }}
               >
                 {editCoverageId ? "Update" : "Submit"}
               </Button>
-            </Grid>
-          </Grid>
-        </form>
-
-        
-
+            </>
+          )}
+        </Box>
+      </form>
+      <Container>
         <div style={{ height: 400, width: "100%", marginTop: "10px" }}>
-        {loading ? (
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          <CircularProgress />
-        </div>
-      ) : (
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            sortModel={sortModel}
-            rowsPerPageOptions={[10]}
-          />)
-      }
+          {loading ? (
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          ) : (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              sortModel={sortModel}
+              rowsPerPageOptions={[10]}
+            />
+          )}
         </div>
         <Dialog open={newAssetDialogOpen} onClose={handleCloseNewAssetDialog}>
           <DialogTitle>Add New Asset</DialogTitle>

@@ -1,26 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { fetchControlFamilies } from '../api/controlFamilyAPI';
-import { fetchControls } from '../api/ControlAPI';
-import { fetchActions } from '../api/actionAPI';
-import { uploadActionFile } from '../api/uploadAPI';
+import React, { useState, useEffect } from "react";
+import { fetchControlFamilies } from "../api/controlFamilyAPI";
+import { fetchControls } from "../api/ControlAPI";
+import { fetchActions } from "../api/actionAPI";
+import { uploadActionFile } from "../api/uploadAPI";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Paper, Select, MenuItem, Button, TextField, Snackbar, Alert
-} from '@mui/material';
-import Loading from '../components/Loading'; // Import the Loading component
-import '../styles/ListOfActions.css';
-import axios from 'axios';
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Select,
+  MenuItem,
+  Button,
+  TextField,
+  Snackbar,
+  Alert,
+  FormControl,
+  InputLabel,
+  Box,
+} from "@mui/material";
+import Loading from "../components/Loading"; // Import the Loading component
+import "../styles/ListOfActions.css";
+import axios from "axios";
+import { getAssetInAssetDetails, getScopedInAssetDetails } from "../api/assetDetailsApi";
 
 const ListOfActions = () => {
   const [controlFamilies, setControlFamilies] = useState([]);
   const [controls, setControls] = useState([]);
   const [actions, setActions] = useState([]);
-  const [expandedFamilyId, setExpandedFamilyId] = useState('');
-  const [selectedControlId, setSelectedControlId] = useState('');
+  const [expandedFamilyId, setExpandedFamilyId] = useState("");
+  const [selectedControlId, setSelectedControlId] = useState("");
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-  const [pdfUrl, setPdfUrl] = useState('');
+  const [error, setError] = useState("");
+  const [pdfUrl, setPdfUrl] = useState("");
+
+  const [assetDetails, setAssetDetails] = useState([]);
+  const [selectedAssetDetails, setSelectedAssetDetails] = useState("")
+  const [scoped, setScoped] = useState([]);
+  const [selectedAsset, setSelectedAsset] = useState("");
+  const [selectedScoped, setSelectedScoped] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
@@ -31,11 +53,11 @@ const ListOfActions = () => {
         if (familyResponse.data) {
           setControlFamilies(familyResponse.data);
         } else {
-          throw new Error('No data found for control families');
+          throw new Error("No data found for control families");
         }
       } catch (err) {
         console.error(err);
-        setError('Failed to fetch control families.');
+        setError("Failed to fetch control families.");
       } finally {
         setLoading(false); // Set loading to false after fetching data
       }
@@ -52,11 +74,11 @@ const ListOfActions = () => {
           if (controlResponse.data) {
             setControls(controlResponse.data);
           } else {
-            throw new Error('No data found for controls');
+            throw new Error("No data found for controls");
           }
         } catch (err) {
           console.error(err);
-          setError('Failed to fetch controls.');
+          setError("Failed to fetch controls.");
         } finally {
           setLoading(false); // Set loading to false after fetching data
         }
@@ -73,16 +95,22 @@ const ListOfActions = () => {
           const actionResponse = await fetchActions();
           if (actionResponse.data) {
             if (Array.isArray(actionResponse.data)) {
-              setActions(actionResponse.data.filter(action => action.control_Id && action.control_Id._id === selectedControlId));
+              setActions(
+                actionResponse.data.filter(
+                  (action) =>
+                    action.control_Id &&
+                    action.control_Id._id === selectedControlId
+                )
+              );
             } else {
-              throw new Error('Actions data is not an array');
+              throw new Error("Actions data is not an array");
             }
           } else {
-            throw new Error('No data found for actions');
+            throw new Error("No data found for actions");
           }
         } catch (err) {
           console.error(err);
-          setError('Failed to fetch actions.');
+          setError("Failed to fetch actions.");
         } finally {
           setLoading(false); // Set loading to false after fetching data
         }
@@ -93,8 +121,45 @@ const ListOfActions = () => {
     fetchActionData();
   }, [selectedControlId]);
 
+  useEffect(() => {
+    const fetchAssets = async () => {
+      const response = await getAssetInAssetDetails();
+      setAssetDetails(response);
+      
+    };
+    fetchAssets();
+  }, []);
+
+  const handleAssetChange = async (event) => {
+    const assetId = event.target.value;        
+    setSelectedAssetDetails(assetId);
+    
+    setSelectedScoped("");
+
+    try {
+      
+      if (selectedAssetDetails) {
+        const response = await getScopedInAssetDetails(assetId);
+        console.log(response);
+        setScoped(response);
+        console.log(scoped);
+        
+        
+      } else {
+        setScoped([]); // Set to empty array if no data is returned
+      }
+    } catch (error) {
+      console.error("Error fetching scoped data:", error);
+      setScoped([]);
+    }
+  };
+
+  const handleScopedChange = (event) => {
+    setSelectedScoped(event.target.value);
+  };
+
   const handleFamilyClick = (familyId) => {
-    setExpandedFamilyId(expandedFamilyId === familyId ? '' : familyId);
+    setExpandedFamilyId(expandedFamilyId === familyId ? "" : familyId);
   };
 
   const handleControlClick = (controlId) => {
@@ -109,8 +174,8 @@ const ListOfActions = () => {
   const handleFileUpload = async (actionId) => {
     if (file) {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('actionId', actionId);
+      formData.append("file", file);
+      formData.append("actionId", actionId);
 
       setUploading(true);
       try {
@@ -118,18 +183,20 @@ const ListOfActions = () => {
         if (response.file && response.file.path) {
           setPdfUrl(response.file.path);
           setSubmitted(true);
-          setError(''); // Clear error if successful
+          setError(""); // Clear error if successful
         } else {
-          throw new Error('File upload response does not contain the expected data');
+          throw new Error(
+            "File upload response does not contain the expected data"
+          );
         }
       } catch (err) {
         console.error(err);
-        setError('Failed to upload file');
+        setError("Failed to upload file");
       } finally {
         setUploading(false);
       }
     } else {
-      setError('No file selected');
+      setError("No file selected");
     }
   };
 
@@ -144,87 +211,162 @@ const ListOfActions = () => {
   //     setError('Failed to mark action as completed.');
   //   }
   // };
-  
+
   const handleMarkAsCompleted = async (actionId) => {
     try {
-      const response = await axios.put(`http://localhost:8021/api/v1/actions/${actionId}`, { isCompleted: true });
-      if (response.status === 200) { // Check if the response status is OK
-        setActions(actions.map(action =>
-          action._id === actionId ? { ...action, isCompleted: true } : action
-        ));
+      const response = await axios.put(
+        `http://localhost:8021/api/v1/actions/${actionId}`,
+        { isCompleted: true }
+      );
+      if (response.status === 200) {
+        // Check if the response status is OK
+        setActions(
+          actions.map((action) =>
+            action._id === actionId ? { ...action, isCompleted: true } : action
+          )
+        );
       } else {
-        throw new Error('Failed to mark action as completed.');
+        throw new Error("Failed to mark action as completed.");
       }
     } catch (error) {
-      console.error('Error marking action as completed:', error.response ? error.response.data : error.message);
-      setError('Failed to mark action as completed.');
+      console.error(
+        "Error marking action as completed:",
+        error.response ? error.response.data : error.message
+      );
+      setError("Failed to mark action as completed.");
     }
   };
-  
-  const handleStatusChange = async (actionId, newStatus) => {
-    try {
-      await axios.put(`http://localhost:8021/api/v1/actions/${actionId}`, { status: newStatus });
-      setActions(actions.map(action =>
-        action._id === actionId ? { ...action, status: newStatus } : action
-      ));
-    } catch (error) {
-      console.error('Error updating action status:', error.response ? error.response.data : error.message);
-      setError('Failed to update action status.');
-    }
-  };
+
+  // const handleStatusChange = async (actionId, newStatus) => {
+  //   try {
+  //     await axios.put(`http://localhost:8021/api/v1/actions/${actionId}`, {
+  //       status: newStatus,
+  //     });
+  //     setActions(
+  //       actions.map((action) =>
+  //         action._id === actionId ? { ...action, status: newStatus } : action
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error(
+  //       "Error updating action status:",
+  //       error.response ? error.response.data : error.message
+  //     );
+  //     setError("Failed to update action status.");
+  //   }
+  // };
 
   if (loading) {
     return <Loading />; // Show the loading animation while data is loading
   }
 
   return (
-    <div className="new-page">
-      <div className="sidebar">
-        {controlFamilies.map(family => (
-          <div key={family._id} className="control-family">
-            <div className="control-family-header" onClick={() => handleFamilyClick(family._id)}>
-              {family.name}
-            </div>
-            {expandedFamilyId === family._id && (
-              <div className="controls">
-                {controls
-                  .filter(control => control.control_Family_Id._id === family._id)
-                  .map(control => (
-                    <div key={control._id} className="control" onClick={() => handleControlClick(control._id)}>
-                      {control.name}
-                    </div>
-                  ))}
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "end",
+          paddingX: "16px",
+          gap: "10px"
+        }}
+      >
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="asset-label">Asset</InputLabel>
+          <Select
+            labelId="asset-label"
+            value={selectedAssetDetails}
+            onChange={(e) => setSelectedAssetDetails(e.target.value)}
+            label="Asset"
+          >
+            {assetDetails.map((assetDetail) => (
+              <MenuItem key={assetDetail.asset._id} value={assetDetail.asset._id}>
+                {assetDetail.asset.name} - {assetDetail.scoped.name} (
+                {assetDetail.asset.isScoped ? "Scoped" : "Non-Scoped"})
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {/* {selectedAssetDetails && (
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Scoped</InputLabel>
+              <Select
+                value={selectedScoped}
+                onChange={(e)=> setSelectedScoped(e.target.value)}
+                label="Scoped"
+              >
+                {scoped.map((scope) => (
+                  <MenuItem key={scope._id} value={scope.scoped._id}>
+                    {scope.scoped.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )} */}
+      </Box>
+      <div className="new-page">
+        <div className="sidebar">
+          {controlFamilies.map((family) => (
+            <div key={family._id} className="control-family">
+              <div
+                className="control-family-header"
+                onClick={() => handleFamilyClick(family._id)}
+              >
+                {family.name}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
-      <div className="content">
-        {error && (
-          <Snackbar open={Boolean(error)} autoHideDuration={6000} onClose={() => setError('')}>
-            <Alert onClose={() => setError('')} severity="error">{error}</Alert>
-          </Snackbar>
-        )}
-       <TableContainer component={Paper}>
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell>Action ID</TableCell>
-        <TableCell>Action Name</TableCell>
-        <TableCell>Status</TableCell>
-        <TableCell>Upload</TableCell>
-        <TableCell>Submit</TableCell>
-        <TableCell>View PDF</TableCell>
-        <TableCell>Mark as Completed</TableCell> {/* New Column */}
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {actions.length > 0 ? (
-        actions.map(action => (
-          <TableRow key={action._id}>
-            <TableCell>{action.action_Id}</TableCell>
-            <TableCell>{action.name}</TableCell>
-            {/* <TableCell>
+              {expandedFamilyId === family._id && (
+                <div className="controls">
+                  {controls
+                    .filter(
+                      (control) => control.control_Family_Id._id === family._id
+                    )
+                    .map((control) => (
+                      <div
+                        key={control._id}
+                        className="control"
+                        onClick={() => handleControlClick(control._id)}
+                      >
+                        {control.name}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="content">
+          {error && (
+            <Snackbar
+              open={Boolean(error)}
+              autoHideDuration={6000}
+              onClose={() => setError("")}
+            >
+              <Alert onClose={() => setError("")} severity="error">
+                {error}
+              </Alert>
+            </Snackbar>
+          )}
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Action ID</TableCell>
+                  <TableCell>Action Name</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Upload</TableCell>
+                  <TableCell>Submit</TableCell>
+                  {/* <TableCell>View PDF</TableCell> */}
+                  <TableCell>Mark as Completed</TableCell> {/* New Column */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {actions.length > 0 ? (
+                  actions.map((action) => (
+                    <TableRow key={action._id}>
+                      <TableCell>{action.action_Id}</TableCell>
+                      <TableCell>{action.name}</TableCell>
+                      {/* <TableCell>
               <Select
                 defaultValue={action.isCompleted ? 'completed' : 'incomplete'}
                 onChange={(e) => handleStatusChange(action._id, e.target.value)}
@@ -235,48 +377,64 @@ const ListOfActions = () => {
                 <MenuItem value="disable">Disable</MenuItem>
               </Select>
             </TableCell> */}
-            <TableCell>
-              <TextField type="file" inputProps={{ accept: 'application/pdf' }} onChange={handleFileChange} />
-            </TableCell>
-            <TableCell>
-              <Button onClick={() => handleFileUpload(action._id)} disabled={uploading || !file}>
-                {uploading ? 'Uploading...' : 'Upload'}
-              </Button>
-            </TableCell>
-            <TableCell>
-              {submitted && pdfUrl && (
-                <a href={`/${pdfUrl}`} target="_blank" rel="noopener noreferrer">
-                  View PDF
-                </a>
-              )}
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleMarkAsCompleted(action._id)}
-                disabled={action.isCompleted}
-              >
-                {action.isCompleted ? 'Completed' : 'Mark as Completed'}
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))
-      ) : (
-        <TableRow>
-          <TableCell colSpan={7} align="center">No actions available</TableCell> {/* Adjust colspan */}
-        </TableRow>
-      )}
-    </TableBody>
-  </Table>
-</TableContainer>
+                      <TableCell>
+                        <TextField
+                          type="file"
+                          inputProps={{ accept: "application/pdf" }}
+                          onChange={handleFileChange}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => handleFileUpload(action._id)}
+                          disabled={uploading || !file}
+                        >
+                          {uploading ? "Uploading..." : "Upload"}
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        {submitted && pdfUrl && (
+                          <a
+                            href={`/${pdfUrl}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View PDF
+                          </a>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={() => handleMarkAsCompleted(action._id)}
+                          disabled={action.isCompleted}
+                        >
+                          {action.isCompleted
+                            ? "Completed"
+                            : "Mark as Completed"}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center">
+                      No actions available
+                    </TableCell>{" "}
+                    {/* Adjust colspan */}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default ListOfActions;
-
 
 // import React, { useState, useEffect } from 'react';
 // import { fetchControlFamilies } from '../api/controlFamilyAPI';

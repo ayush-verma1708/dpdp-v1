@@ -137,4 +137,18 @@ const deleteAssetDetails = AsyncHandler(async (req, res) => {
   }
 });
 
-export { getAssetDetails, addAssetDetails, deleteAssetDetails, updateAssetDetails };
+const getAssetsInAssetDetails = AsyncHandler(async (req, res) => {
+  const assetDetails = await AssetDetails.find().populate('asset', 'name isScoped').populate('scoped','name');
+  res.status(200).json(assetDetails);
+});
+
+const getScopedInSAssetdDetails = AsyncHandler(async (req, res) => {
+  const { asset } = req.params;
+  
+  const assetDetails = await AssetDetails.find({ asset: asset }).populate('scoped', 'name');
+  
+
+  res.status(200).json(assetDetails);
+});
+
+export { getAssetDetails, addAssetDetails, deleteAssetDetails, updateAssetDetails, getAssetsInAssetDetails, getScopedInSAssetdDetails };
